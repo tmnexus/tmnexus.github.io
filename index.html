@@ -15,7 +15,7 @@
   <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
   <link rel="canonical" href="https://tmnexus.github.io" />
 
-  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
+  <!-- Open Graph -->
   <meta property="og:title" content="TM Nexus | AI-Driven Business Solutions" />
   <meta property="og:description" content="Empowering businesses with AI-driven analytics, automation, and innovation for a smarter future." />
   <meta property="og:image" content="https://tmnexus.github.io/assets/logo.png" />
@@ -41,7 +41,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Inline CSS for Carousel -->
+  <!-- Carousel CSS -->
   <style>
     .carousel-container {
       position: relative;
@@ -85,17 +85,18 @@
       border-radius: 4px;
       z-index: 20;
     }
-    .carousel-button.left {
-      left: 10px;
-    }
-    .carousel-button.right {
-      right: 10px;
-    }
-    .carousel-button:hover {
-      background: rgba(0, 0, 0, 0.8);
-    }
+    .carousel-button.left { left: 10px; }
+    .carousel-button.right { right: 10px; }
+    .carousel-button:hover { background: rgba(0, 0, 0, 0.8); }
   </style>
+
+  <!-- Cloudflare Turnstile (Explicit Render) -->
+  <script
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+    defer
+  ></script>
 </head>
+
 <body class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
 
   <!-- Background Canvas -->
@@ -103,6 +104,7 @@
 
   <!-- Main Content -->
   <div class="relative z-10 flex flex-col items-center text-center px-4 max-w-md w-full">
+
     <img src="assets/logo.png" alt="TM Nexus Logo" class="w-24 h-24 rounded-full border-4 border-white mb-4 shadow-lg" />
 
     <h1 class="text-3xl font-bold mb-2">TM Nexus</h1>
@@ -114,18 +116,22 @@
       <a href="mailto:tmnexus.offi@gmail.com" class="hover:text-pink-400"><i data-lucide="mail" class="w-6 h-6"></i></a>
     </div>
 
+    <!-- Turnstile Widget Container -->
+    <div id="turnstile-container" class="my-4"></div>
+
     <!-- Carousel Section -->
     <section class="carousel-container">
       <h2 class="text-2xl font-bold mb-4">Our Apps</h2>
       <div class="carousel" id="carousel">
+
         <!-- Carousel Item 1 -->
         <a href="https://likedinoptimizer.vercel.app/" class="carousel-item">
           <h3 class="text-lg font-semibold mt-2">LinkedIn Profile Optimizer AI</h3>
           <p class="text-sm text-gray-300">The secret to faster, smarter career growth—leverage the power of AI to unlock your professional potential.</p>
         </a>
-        <!-- add more -->
         
       </div>
+
       <button class="carousel-button left" onclick="moveCarousel(-1)">&lt;</button>
       <button class="carousel-button right" onclick="moveCarousel(1)">&gt;</button>
     </section>
@@ -137,27 +143,28 @@
       <a href="https://tmnexus-official.vercel.app/contact" class="border border-white py-3 rounded-lg font-semibold hover:bg-white hover:text-black">Contact Us</a>
     </div>
   </div>
-  <footer class="relative z-10 w-full text-center py-6 mt-10 border-t border-gray-700/40">
-  <div class="flex justify-center items-center space-x-2 text-gray-400">
-    <img src="assets/logo.png" class="w-5 h-5 rounded-full opacity-80" alt="TM Nexus Logo">
-    <span>Made with ❤️ by <strong>TM Nexus</strong></span>
-  </div>
-  <a href="privacy-policy.html" class="text-blue-400 hover:underline text-sm block mt-1">Terms & Policies</a>
-</footer>
 
+  <footer class="relative z-10 w-full text-center py-6 mt-10 border-t border-gray-700/40">
+    <div class="flex justify-center items-center space-x-2 text-gray-400">
+      <img src="assets/logo.png" class="w-5 h-5 rounded-full opacity-80" alt="TM Nexus Logo">
+      <span>Made with ❤️ by <strong>TM Nexus</strong></span>
+    </div>
+    <a href="privacy-policy.html" class="text-blue-400 hover:underline text-sm block mt-1">Terms & Policies</a>
+  </footer>
 
   <!-- Scripts -->
   <script>lucide.createIcons();</script>
   <script src="assets/three-bg.js"></script>
+
   <script>
-    // Service Worker Registration
+    // Service Worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(() => console.log('SW registered'))
         .catch(err => console.error('SW failed', err));
     }
 
-    // Carousel Functionality
+    // Carousel
     let currentIndex = 0;
     const carousel = document.getElementById('carousel');
     const items = document.querySelectorAll('.carousel-item');
@@ -168,8 +175,17 @@
       carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
 
-    // Auto-slide every 5 seconds
     setInterval(() => moveCarousel(1), 5000);
+
+    // Cloudflare Turnstile Render
+    window.onload = function () {
+      turnstile.render("#turnstile-container", {
+        sitekey: "0x4AAAAAACDAW0f6hF6SBqXM",
+        callback: function (token) {
+          console.log("Turnstile Success:", token);
+        },
+      });
+    };
   </script>
 </body>
 </html>
